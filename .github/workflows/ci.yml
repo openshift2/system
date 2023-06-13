@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: AWS Hosted Runners
         id: aws_hosted_runners
-        uses: samd2/aws-hosted-runners@v0.1.4
+        uses: samd2/aws-hosted-runners@v0.1.9
 
   posix:
     strategy:
