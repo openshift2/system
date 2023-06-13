@@ -200,7 +200,7 @@ jobs:
           - toolset: msvc-14.0
             cxxstd: "14"
             addrmd: 32,64
-            os: 'windows-2019'
+            os: 'windows-2019-no-aws'
           - toolset: msvc-14.2
             cxxstd: "14,17,20,latest"
             addrmd: 32,64
