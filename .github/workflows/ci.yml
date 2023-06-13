@@ -20,6 +20,8 @@ jobs:
       - name: AWS Hosted Runners
         id: aws_hosted_runners
         uses: samd2/aws-hosted-runners@v0.1.9
+        with:
+          debug: 'true'
 
   posix:
     strategy:
