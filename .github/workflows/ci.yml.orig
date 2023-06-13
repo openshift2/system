@@ -12,15 +12,6 @@ env:
   UBSAN_OPTIONS: print_stacktrace=1
 
 jobs:
-  runner-selection:
-    runs-on: ubuntu-latest
-    outputs:
-      labelmatrix: ${{ steps.aws_hosted_runners.outputs.labelmatrix }}
-    steps:
-      - name: AWS Hosted Runners
-        id: aws_hosted_runners
-        uses: samd2/aws-hosted-runners@v0.1.4
-
   posix:
     strategy:
       fail-fast: false
@@ -28,117 +19,115 @@ jobs:
         include:
           - toolset: gcc-4.8
             cxxstd: "03,11"
-            os: 'ubuntu-latest'
+            os: ubuntu-latest
             container: ubuntu:18.04
             install: g++-4.8
           - toolset: gcc-5
             cxxstd: "03,11,14,1z"
-            os: 'ubuntu-latest'
+            os: ubuntu-latest
             container: ubuntu:18.04
             install: g++-5
           - toolset: gcc-6
             cxxstd: "03,11,14,1z"
-            os: 'ubuntu-latest'
+            os: ubuntu-latest
             container: ubuntu:18.04
             install: g++-6
           - toolset: gcc-7
             cxxstd: "03,11,14,17"
-            os: 'ubuntu-latest'
+            os: ubuntu-latest
             container: ubuntu:18.04
           - toolset: gcc-8
             cxxstd: "03,11,14,17,2a"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
             install: g++-8
           - toolset: gcc-9
             cxxstd: "03,11,14,17,2a"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
           - toolset: gcc-10
             cxxstd: "03,11,14,17,2a"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
             install: g++-10
           - toolset: gcc-11
             cxxstd: "03,11,14,17,2a"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
             install: g++-11
           - toolset: gcc-12
             cxxstd: "03,11,14,17,20,2b"
-            os: 'ubuntu-22.04'
+            os: ubuntu-22.04
             install: g++-12
           - toolset: clang
             compiler: clang++-3.9
             cxxstd: "03,11,14"
-            os: 'ubuntu-latest'
+            os: ubuntu-latest
             container: ubuntu:18.04
             install: clang-3.9
           - toolset: clang
             compiler: clang++-4.0
             cxxstd: "03,11,14"
-            os: 'ubuntu-latest'
+            os: ubuntu-latest
             container: ubuntu:18.04
             install: clang-4.0
           - toolset: clang
             compiler: clang++-5.0
             cxxstd: "03,11,14,1z"
-            os: 'ubuntu-latest'
+            os: ubuntu-latest
             container: ubuntu:18.04
             install: clang-5.0
           - toolset: clang
             compiler: clang++-6.0
             cxxstd: "03,11,14,17"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
             install: clang-6.0
           - toolset: clang
             compiler: clang++-7
             cxxstd: "03,11,14,17"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
             install: clang-7
           - toolset: clang
             compiler: clang++-8
             cxxstd: "03,11,14,17"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
             install: clang-8
           - toolset: clang
             compiler: clang++-9
             cxxstd: "03,11,14,17"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
             install: clang-9
           - toolset: clang
             compiler: clang++-10
             cxxstd: "03,11,14,17,2a"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
           - toolset: clang
             compiler: clang++-11
             cxxstd: "03,11,14,17,2a"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
           - toolset: clang
             compiler: clang++-12
             cxxstd: "03,11,14,17,20"
-            os: 'ubuntu-20.04'
+            os: ubuntu-20.04
           - toolset: clang
             compiler: clang++-13
             cxxstd: "03,11,14,17,20,2b"
-            os: 'ubuntu-22.04'
+            os: ubuntu-22.04
             install: clang-13
           - toolset: clang
             compiler: clang++-14
             cxxstd: "03,11,14,17,20,2b"
-            os: 'ubuntu-22.04'
+            os: ubuntu-22.04
             install: clang-14
           - toolset: clang
             compiler: clang++-15
             cxxstd: "03,11,14,17,20,2b"
-            os: 'ubuntu-22.04'
+            os: ubuntu-22.04
             install: clang-15
           - toolset: clang
             cxxstd: "03,11,14,17,2a"
-            os: 'macos-11'
+            os: macos-11
           - toolset: clang
             cxxstd: "03,11,14,17,2a"
-            os: 'macos-12'
+            os: macos-12
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
     container: ${{matrix.container}}
 
     defaults:
@@ -198,27 +187,25 @@ jobs:
           - toolset: msvc-14.0
             cxxstd: "14"
             addrmd: 32,64
-            os: 'windows-2019'
+            os: windows-2019
           - toolset: msvc-14.2
             cxxstd: "14,17,20,latest"
             addrmd: 32,64
-            os: 'windows-2019'
+            os: windows-2019
           - toolset: msvc-14.3
             cxxstd: "14,17,20,latest"
             addrmd: 32,64
-            os: 'windows-2022'
+            os: windows-2022
           - toolset: clang-win
             cxxstd: "14,17,latest"
             addrmd: 32,64
-            os: 'windows-2022'
+            os: windows-2022
           - toolset: gcc
             cxxstd: "03,11,14,17,2a"
             addrmd: 64
-            os: 'windows-2019'
+            os: windows-2019
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v3
@@ -256,14 +243,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: 'ubuntu-20.04'
-          - os: 'ubuntu-22.04'
-          - os: 'macos-11'
-          - os: 'macos-12'
+          - os: ubuntu-20.04
+          - os: ubuntu-22.04
+          - os: macos-11
+          - os: macos-12
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v3
@@ -305,14 +290,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: 'ubuntu-20.04'
-          - os: 'ubuntu-22.04'
-          - os: 'macos-11'
-          - os: 'macos-12'
+          - os: ubuntu-20.04
+          - os: ubuntu-22.04
+          - os: macos-11
+          - os: macos-12
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v3
@@ -364,14 +347,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: 'ubuntu-20.04'
-          - os: 'ubuntu-22.04'
-          - os: 'macos-11'
-          - os: 'macos-12'
+          - os: ubuntu-20.04
+          - os: ubuntu-22.04
+          - os: macos-11
+          - os: macos-12
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v3
@@ -421,12 +402,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: 'windows-2019'
-          - os: 'windows-2022'
+          - os: windows-2019
+          - os: windows-2022
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v3
@@ -472,12 +451,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: 'windows-2019'
-          - os: 'windows-2022'
+          - os: windows-2019
+          - os: windows-2022
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v3
@@ -541,12 +518,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: 'windows-2019'
-          - os: 'windows-2022'
+          - os: windows-2019
+          - os: windows-2022
 
-    needs: [runner-selection]
-
-    runs-on: ${{ fromJSON(needs.runner-selection.outputs.labelmatrix)[matrix.os] }}
+    runs-on: ${{matrix.os}}
 
     steps:
       - uses: actions/checkout@v3
